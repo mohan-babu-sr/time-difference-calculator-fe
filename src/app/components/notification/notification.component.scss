@@ -1,0 +1,29 @@
+mat-form-field {
+    margin-right: 12px;
+}
+
+.notify-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-error {
+    color: #f44336; // Red
+}
+
+.icon-delete {
+    color: #d32f2f; // Darker Red
+}
+
+.icon-info {
+    color: #2196f3; // Blue
+}
+
+.icon-warning {
+    color: #ff9800; // Orange
+}
+
+.icon-success {
+    color: #4caf50; // Green
+}

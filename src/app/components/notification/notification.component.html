@@ -1,0 +1,14 @@
+<div class="notify-container">
+    <span class="example-pizza-party" matSnackBarLabel>
+        {{data.message}}
+    </span>
+    <span matSnackBarActions>
+        <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">
+            <mat-icon *ngIf="data.type === 'error'" class="icon-error">error</mat-icon>
+            <mat-icon *ngIf="data.type === 'delete'" class="icon-delete">delete_forever</mat-icon>
+            <mat-icon *ngIf="data.type === 'info'" class="icon-info">info</mat-icon>
+            <mat-icon *ngIf="data.type === 'warning'" class="icon-warning">warning</mat-icon>
+            <mat-icon *ngIf="data.type === 'success'" class="icon-success">done_all</mat-icon>
+        </button>
+    </span>
+</div>

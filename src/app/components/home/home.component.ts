@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { map } from 'rxjs';
 import { DbService } from 'src/app/services/db.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationComponent } from '../notification/notification.component';
+import { CONSTANTS } from 'src/app/constant';
 
 @Component({
   selector: 'app-home',
@@ -9,13 +12,13 @@ import { DbService } from 'src/app/services/db.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-currentDate = new Date();
+  currentDate = new Date();
   selectedTime = moment().format('LTS');
   endTime: any;
   data: any;
   isCurrentDateExist: boolean = false;
 
-  constructor(private dbService: DbService) { }
+  constructor(private dbService: DbService, private _notify: MatSnackBar) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -52,6 +55,8 @@ currentDate = new Date();
           outTime: this.endTime
         };
         this.addData(payload);
+      } else {
+        this.notify(CONSTANTS.INFO, CONSTANTS.OUT_TIME_MESSAGE + this.endTime);
       }
     });
   }
@@ -74,6 +79,7 @@ currentDate = new Date();
   addData(payload: any): void {
     this.dbService.addData(payload).subscribe(() => {
       this.loadData();
+      this.notify(CONSTANTS.SUCCESS, CONSTANTS.RECORD_ADDED);
     });
   }
 
@@ -81,6 +87,18 @@ currentDate = new Date();
   deleteData(id: string): void {
     this.dbService.deleteData(id).subscribe(() => {
       this.loadData();
+      this.notify(CONSTANTS.WARNING, CONSTANTS.RECORD_DELETED);
+
+    });
+  }
+
+  notify(statusType: string, message: string): void {
+    this._notify.openFromComponent(NotificationComponent, {
+      duration: 5 * 1000,
+      data: {
+        type: statusType,
+        message: message
+      }
     });
   }
 }

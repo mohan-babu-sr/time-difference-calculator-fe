@@ -6,7 +6,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './components/navbar/navbar.component';
-
+import { HomeComponent } from './components/home/home.component';
+import { DetailsComponent } from './components/details/details.component';
+import { LoginComponent } from './components/login/login.component';
 
 // Material
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -19,9 +21,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import { HomeComponent } from './components/home/home.component';
-import { DetailsComponent } from './components/details/details.component';
-import { LoginComponent } from './components/login/login.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { NotificationComponent } from './components/notification/notification.component';
+
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { LoginComponent } from './components/login/login.component';
     NavbarComponent,
     HomeComponent,
     DetailsComponent,
-    LoginComponent
+    LoginComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import { LoginComponent } from './components/login/login.component';
     MatCardModule,
     MatTooltipModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
