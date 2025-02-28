@@ -11,7 +11,7 @@
       <div class="form-group">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Current Date</mat-label>
-          <input matInput [matDatepicker]="picker" [value]="currentDate">
+          <input matInput [matDatepicker]="picker" [value]="currentDate" (dateChange)="onDateChange($event)">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>

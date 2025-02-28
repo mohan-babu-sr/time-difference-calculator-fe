@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+    this.checkAndCalculateTime(6);
   }
 
   /** Fetch all data */
@@ -31,7 +32,6 @@ export class HomeComponent implements OnInit {
       console.log('Data:', this.data);
     });
 
-    this.checkAndCalculateTime(6);
   }
 
   /** Handles time input change */
@@ -41,38 +41,48 @@ export class HomeComponent implements OnInit {
     console.log('Time changed to:', this.selectedTime);
   }
 
+  onDateChange(event: any) {
+    this.currentDate = event.value; 
+    this.selectedTime = moment().format('LTS');
+  }
+
   /** Checks if current date exists and calculates time */
   checkAndCalculateTime(hoursToAdd: number): void {
-    this.getByDate(this.currentDate).subscribe(isExist => {
-      this.isCurrentDateExist = isExist;
-      console.log('selectedTime:', this.selectedTime);
+    this.getByDate(this.currentDate).subscribe(response => {
+      this.isCurrentDateExist = response.length > 0;
       this.endTime = moment(this.selectedTime, 'LTS').add(hoursToAdd, 'hours').format('LTS');
 
-      if (!this.isCurrentDateExist) {
+      if (this.isCurrentDateExist) {
+        this.currentDate = this.data[0].date;
+        this.selectedTime = this.data[0].inTime;
+        this.endTime = this.data[0].outTime;
+        this.notify(CONSTANTS.INFO, CONSTANTS.OUT_TIME_MESSAGE + this.endTime);
+
+      } else {
         const payload = {
           date: this.currentDate,
           inTime: this.selectedTime,
           outTime: this.endTime
         };
         this.addData(payload);
-      } else {
-        this.notify(CONSTANTS.INFO, CONSTANTS.OUT_TIME_MESSAGE + this.endTime);
       }
     });
+    this.isCurrentDateExist = false;
   }
 
   /** Fetches data by date */
   getByDate(date: Date) {
-    return this.dbService.getByDate(date).pipe(
-      map(response => {
-        if (response.length > 0) {
-          this.currentDate = response[0].date;
-          this.selectedTime = response[0].inTime;
-          this.endTime = response[0].outTime;
-        }
-        return response.length > 0;
-      })
-    );
+    return this.dbService.getByDate(moment(date).format('YYYY-MM-DD'));
+    // .pipe(
+    //   map(response => {
+    //     if (response.length > 0) {
+    //       this.currentDate = response[0].date;
+    //       this.selectedTime = response[0].inTime;
+    //       this.endTime = response[0].outTime;
+    //     }
+    //     return response.length > 0;
+    //   })
+    // );
   }
 
   /** Adds new data entry */
@@ -80,6 +90,9 @@ export class HomeComponent implements OnInit {
     this.dbService.addData(payload).subscribe(() => {
       this.loadData();
       this.notify(CONSTANTS.SUCCESS, CONSTANTS.RECORD_ADDED);
+      setTimeout(() => {
+        this.notify(CONSTANTS.INFO, CONSTANTS.OUT_TIME_MESSAGE + this.endTime);
+      }, 5000);
     });
   }
 
