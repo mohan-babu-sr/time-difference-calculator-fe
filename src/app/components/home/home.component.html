@@ -1,0 +1,43 @@
+<div class="page-container">
+    <mat-card-header>
+      <mat-card-title class="title">Time Needed in Office</mat-card-title>
+    </mat-card-header>
+  
+    <mat-card class="form-content">
+      <mat-card-header>
+        <mat-card-title class="details-title">Details</mat-card-title>
+      </mat-card-header>
+  
+      <div class="form-group">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Current Date</mat-label>
+          <input matInput [matDatepicker]="picker" [value]="currentDate">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Enter In-Time</mat-label>
+          <input matInput placeholder="HH:MM AM/PM" [value]="selectedTime" (input)="onTimeChange($event)">
+        </mat-form-field>
+      </div>
+  
+      <button mat-raised-button color="accent" (click)="checkAndCalculateTime(6)"
+        matTooltip="Default calculation based on a 6-hour">
+        Calculate
+      </button>
+    </mat-card>
+  
+    <mat-card class="result-card">
+      <mat-card-header>
+        <mat-card-subtitle>Calculated Out-Time: <strong>{{ endTime }}</strong></mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  
+    <mat-card-actions class="button-group">
+      <button mat-button color="accent" (click)="checkAndCalculateTime(6)" matTooltip="Calculation based on an 6-hour">For
+        6Hrs</button>
+      <button mat-button color="accent" (click)="checkAndCalculateTime(8)" matTooltip="calculation based on an 8-hour">For
+        8Hrs</button>
+    </mat-card-actions>
+  </div>

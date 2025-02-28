@@ -1,0 +1,31 @@
+<mat-toolbar color="black" class="navbar">
+    <!-- Left Side: App Name -->
+    <span class="app-name">Time Tracker</span>
+
+    <!-- Desktop View -->
+    <span class="spacer"></span>
+    <div class="desktop-menu">
+        <button mat-button routerLink="/home">Home</button>
+        <button mat-button routerLink="/details">Details</button>
+        <button *ngIf="!isLoggedIn" mat-button routerLink="/login">Login</button>
+        <!-- <mat-icon>account_circle</mat-icon> -->
+        <img *ngIf="isLoggedIn" src="assets\profile.jpg" alt="Profile Image" class="profile-img" />
+    </div>
+
+    <!-- Mobile View: Hamburger Menu -->
+    <button mat-icon-button (click)="toggleMenu()" class="menu-icon">
+        <mat-icon>menu</mat-icon>
+    </button>
+</mat-toolbar>
+
+<!-- Mobile Menu Dropdown -->
+<mat-sidenav-container *ngIf="isMobileMenuOpen">
+    <mat-sidenav mode="over" opened="true" (closedStart)="toggleMenu()">
+        <button mat-button routerLink="/home">Home</button>
+        <button mat-button routerLink="/details">Details</button>
+        <button *ngIf="!isLoggedIn" mat-button routerLink="/login">Login</button>
+        <button *ngIf="isLoggedIn" mat-button>
+            <mat-icon>account_circle</mat-icon> Profile
+        </button>
+    </mat-sidenav>
+</mat-sidenav-container>
