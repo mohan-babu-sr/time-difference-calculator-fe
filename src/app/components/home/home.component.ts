@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
       if (this.isCurrentDateExist) {
         this.currentDate = response[0].date;
         this.selectedTime = response[0].inTime;
-        this.endTime = response[0].outTime;
+        this.endTime = hoursToAdd != 8 ? response[0].outTime : this.endTime;
         this.notify(CONSTANTS.INFO, CONSTANTS.OUT_TIME_MESSAGE + this.endTime);
       } else {
         this.openDialog();
