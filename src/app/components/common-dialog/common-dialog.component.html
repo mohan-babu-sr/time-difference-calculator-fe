@@ -9,5 +9,5 @@
 
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close class="cancel-btn">Close</button>
-    <button mat-button mat-dialog-close (click)="onAction()">{{ data.actionButton }}</button>
+    <button mat-button mat-dialog-close (click)="onAction()" *ngIf="!data.noAction">{{ data.actionButton }}</button>
 </mat-dialog-actions>

@@ -50,9 +50,25 @@ export class HomeComponent implements OnInit {
         this.currentDate = response[0].date;
         this.selectedTime = response[0].inTime;
         this.endTime = hoursToAdd != 8 ? response[0].outTime : this.endTime;
-        this.notify(CONSTANTS.INFO, CONSTANTS.OUT_TIME_MESSAGE + this.endTime);
+        if (this.endTime <= moment().format('LTS') && moment(this.currentDate).format('L') === moment().format('L')) {
+          let dialogData = {
+            title: 'Out-Time Reached!',
+            message: 'Out time reached you can leave office now!',
+            type: 'info',
+            noAction: true
+          }
+          this.openDialog(dialogData, false);
+        } else {
+          this.notify(CONSTANTS.INFO, CONSTANTS.OUT_TIME_MESSAGE + this.endTime);
+        }
       } else {
-        this.openDialog();
+        let dialogCreateData = {
+          title: 'No record found for the selected date!',
+          message: 'Do you want to create a new record? For the selected date: ' + moment(this.currentDate).format('LL'),
+          type: 'info',
+          actionButton: 'Create'
+        }
+        this.openDialog(dialogCreateData, true);
       }
     });
     this.isCurrentDateExist = false;
@@ -83,18 +99,13 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  openDialog() {
+  openDialog(data: any, isAction: boolean): void {
     const dialogRef = this.dialog.open(CommonDialogComponent, {
-      data: {
-        title: 'No record found for the selected date!',
-        message: 'Do you want to create a new record? For the selected date: ' + moment(this.currentDate).format('LL'),
-        type: 'info',
-        actionButton: 'Create'
-      }
+      data: data
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result && isAction) {
         const payload = {
           date: this.currentDate,
           inTime: this.selectedTime,
