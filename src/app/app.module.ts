@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,7 +11,8 @@ import { HomeComponent } from './components/home/home.component';
 import { DetailsComponent } from './components/details/details.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotificationComponent } from './components/notification/notification.component';
-
+import { EditDialogComponent } from './components/edit-dialog/edit-dialog.component';
+import { CommonDialogComponent } from './components/common-dialog/common-dialog.component';
 
 // Material
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -28,7 +30,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
-import { CommonDialogComponent } from './components/common-dialog/common-dialog.component';
 import { MomentFormatPipe } from './pipes/moment-format.pipe';
 
 @NgModule({
@@ -40,13 +41,15 @@ import { MomentFormatPipe } from './pipes/moment-format.pipe';
     LoginComponent,
     NotificationComponent,
     CommonDialogComponent,
-    MomentFormatPipe
+    MomentFormatPipe,
+    EditDialogComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,

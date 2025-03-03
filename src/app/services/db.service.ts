@@ -26,6 +26,11 @@ export class DbService {
     return this.http.post<any>(`${this.apiUrl}`, data);
   }
 
+  // Update a record in MongoDB
+  updateData(updatedData: any) {
+    return this.http.put(`${this.apiUrl}/${updatedData._id}`, updatedData);
+  }
+
   // Delete a record from MongoDB
   deleteData(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);

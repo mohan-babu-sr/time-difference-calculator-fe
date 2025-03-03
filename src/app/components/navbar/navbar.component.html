@@ -8,7 +8,9 @@
         <button mat-button routerLink="/home">Home</button>
         <button mat-button routerLink="/details">Details</button>
         <button *ngIf="!isLoggedIn" mat-button routerLink="/login">Login</button>
-        <img *ngIf="isLoggedIn" src="assets/profile.jpg" alt="Profile Image" class="profile-img" />
+        <span matTooltip="Mohan" routerLink="/login">
+            <img *ngIf="isLoggedIn" src="assets/profile.jpg" alt="Profile Image" class="profile-img" />
+        </span>          
     </div>
 
     <!-- Mobile View: Hamburger Menu -->
@@ -24,7 +26,7 @@
             <button mat-button routerLink="/home" (click)="closeMenu()">Home</button>
             <button mat-button routerLink="/details" (click)="closeMenu()">Details</button>
             <button *ngIf="!isLoggedIn" mat-button routerLink="/login" (click)="closeMenu()">Login</button>
-            <img *ngIf="isLoggedIn" src="assets/profile.jpg" alt="Profile" class="profile-img" (click)="closeMenu()"/>
+            <img routerLink="/login" *ngIf="isLoggedIn" src="assets/profile.jpg" alt="Profile" class="profile-img" (click)="closeMenu()"/>
         </div>
     </mat-sidenav>
     <mat-sidenav-content class="content-container">

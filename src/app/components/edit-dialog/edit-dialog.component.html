@@ -1,0 +1,25 @@
+<h1 mat-dialog-title class="dialog-title">Edit Record</h1>
+
+<div mat-dialog-content class="dialog-content">
+  
+  <!-- Date Field (Disabled) -->
+  <mat-form-field class="full-width">
+    <mat-label>Date</mat-label>
+    <input matInput [(ngModel)]="data.date" disabled class="disabled-field">
+  </mat-form-field>
+
+  <!-- In-Time Field with Validation -->
+  <mat-form-field class="full-width">
+    <mat-label>In-Time</mat-label>
+    <input matInput [(ngModel)]="data.inTime" (input)="onTimeChange($event)" #inTimeCtrl="ngModel" required>
+    <mat-error *ngIf="!isValid">
+      Please enter time in the format <strong>hh:mm:ss AM/PM</strong>
+    </mat-error>
+  </mat-form-field>
+
+</div>
+
+<div mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="onCancel()"  class="cancel-btn">Cancel</button>
+  <button mat-button class="action-btn" (click)="onSave()" [disabled]="!isValid">Save</button>
+</div>

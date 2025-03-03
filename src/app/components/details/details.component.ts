@@ -8,6 +8,8 @@ import { DbService } from 'src/app/services/db.service';
 import { NotificationComponent } from '../notification/notification.component';
 import { MomentInput } from 'moment';
 import * as moment from 'moment';
+import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-details',
@@ -21,7 +23,7 @@ export class DetailsComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private dbService: DbService, private _notify: MatSnackBar) { }
+  constructor(private dbService: DbService, private _notify: MatSnackBar, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -52,6 +54,25 @@ export class DetailsComponent implements AfterViewInit, OnInit {
   editRecord(record: any) {
     console.log('Editing:', record);
     // Implement edit logic here
+    const dialogRef = this.dialog.open(EditDialogComponent, {
+      width: '400px',
+      data: { ...record } // Pass a copy of the record
+    });
+
+    dialogRef.afterClosed().subscribe(updatedData => {
+      if (updatedData) {
+        // Update the data source with the new values
+        updatedData.outTime = moment(updatedData.inTime, 'LTS').add(6, 'hours').format('LTS');
+        this.updateRecord(updatedData);
+      }
+    });
+  }
+
+  // Function to update the record in the database
+  updateRecord(updatedData: any): void {
+    this.dbService.updateData(updatedData).subscribe(() => {
+      this.loadData(); // Reload table data
+    });
   }
 
   deleteRecord(id: string): void {

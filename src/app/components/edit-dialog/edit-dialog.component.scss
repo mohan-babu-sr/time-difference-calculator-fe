@@ -1,0 +1,46 @@
+button:hover {
+    cursor: pointer;
+    color: #69f0ae;
+}
+
+.dialog-title {
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 10px;
+  }
+  
+  .dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .disabled-field {
+    cursor: not-allowed;
+  }
+  
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 10px;
+  }
+  
+  .cancel-btn {
+    color: #757575;
+  }
+  
+  .action-btn {
+    color: white;
+    font-weight: bold;
+  }
+  
+  .action-btn:disabled {
+    color: #bdbdbd;
+    cursor: not-allowed;
+  }
+  
