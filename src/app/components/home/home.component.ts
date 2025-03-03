@@ -5,6 +5,8 @@ import { DbService } from 'src/app/services/db.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotificationComponent } from '../notification/notification.component';
 import { CONSTANTS } from 'src/app/constant';
+import { MatDialog } from '@angular/material/dialog';
+import { CommonDialogComponent } from '../common-dialog/common-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -15,23 +17,15 @@ export class HomeComponent implements OnInit {
   currentDate = new Date();
   selectedTime = moment().format('LTS');
   endTime: any;
-  data: any;
   isCurrentDateExist: boolean = false;
+  isAction: boolean = false;
 
-  constructor(private dbService: DbService, private _notify: MatSnackBar) { }
+  constructor(private dbService: DbService, private _notify: MatSnackBar, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.loadData();
+    // this.openDialog();
+
     this.checkAndCalculateTime(6);
-  }
-
-  /** Fetch all data */
-  loadData(): void {
-    this.dbService.getData().subscribe(response => {
-      this.data = response;
-      console.log('Data:', this.data);
-    });
-
   }
 
   /** Handles time input change */
@@ -42,7 +36,7 @@ export class HomeComponent implements OnInit {
   }
 
   onDateChange(event: any) {
-    this.currentDate = event.value; 
+    this.currentDate = event.value;
     this.selectedTime = moment().format('LTS');
   }
 
@@ -53,18 +47,12 @@ export class HomeComponent implements OnInit {
       this.endTime = moment(this.selectedTime, 'LTS').add(hoursToAdd, 'hours').format('LTS');
 
       if (this.isCurrentDateExist) {
-        this.currentDate = this.data[0].date;
-        this.selectedTime = this.data[0].inTime;
-        this.endTime = this.data[0].outTime;
+        this.currentDate = response[0].date;
+        this.selectedTime = response[0].inTime;
+        this.endTime = response[0].outTime;
         this.notify(CONSTANTS.INFO, CONSTANTS.OUT_TIME_MESSAGE + this.endTime);
-
       } else {
-        const payload = {
-          date: this.currentDate,
-          inTime: this.selectedTime,
-          outTime: this.endTime
-        };
-        this.addData(payload);
+        this.openDialog();
       }
     });
     this.isCurrentDateExist = false;
@@ -73,35 +61,15 @@ export class HomeComponent implements OnInit {
   /** Fetches data by date */
   getByDate(date: Date) {
     return this.dbService.getByDate(moment(date).format('YYYY-MM-DD'));
-    // .pipe(
-    //   map(response => {
-    //     if (response.length > 0) {
-    //       this.currentDate = response[0].date;
-    //       this.selectedTime = response[0].inTime;
-    //       this.endTime = response[0].outTime;
-    //     }
-    //     return response.length > 0;
-    //   })
-    // );
   }
 
   /** Adds new data entry */
   addData(payload: any): void {
     this.dbService.addData(payload).subscribe(() => {
-      this.loadData();
       this.notify(CONSTANTS.SUCCESS, CONSTANTS.RECORD_ADDED);
       setTimeout(() => {
         this.notify(CONSTANTS.INFO, CONSTANTS.OUT_TIME_MESSAGE + this.endTime);
       }, 5000);
-    });
-  }
-
-  /** Deletes a record */
-  deleteData(id: string): void {
-    this.dbService.deleteData(id).subscribe(() => {
-      this.loadData();
-      this.notify(CONSTANTS.WARNING, CONSTANTS.RECORD_DELETED);
-
     });
   }
 
@@ -111,6 +79,27 @@ export class HomeComponent implements OnInit {
       data: {
         type: statusType,
         message: message
+      }
+    });
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(CommonDialogComponent, {
+      data: {
+        title: 'No record found for the selected date!',
+        message: 'Do you want to add a new record? For the selected date: ' + moment(this.currentDate).format('LL'),
+        type: 'info'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const payload = {
+          date: this.currentDate,
+          inTime: this.selectedTime,
+          outTime: this.endTime
+        };
+        this.addData(payload);
       }
     });
   }

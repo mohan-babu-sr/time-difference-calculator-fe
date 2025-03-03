@@ -1,11 +1,13 @@
 import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table'; // ✅ Import this
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CONSTANTS } from 'src/app/constant';
 import { DbService } from 'src/app/services/db.service';
 import { NotificationComponent } from '../notification/notification.component';
+import { MomentInput } from 'moment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-details',
@@ -14,7 +16,7 @@ import { NotificationComponent } from '../notification/notification.component';
 })
 export class DetailsComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = ['date', 'inTime', 'outTime', 'action'];
-  dataSource: any;
+  dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -27,7 +29,13 @@ export class DetailsComponent implements AfterViewInit, OnInit {
 
   loadData(): void {
     this.dbService.getData().subscribe(response => {
-      this.dataSource = response;
+      response = response.map((item: { date: MomentInput; }) => ({
+        ...item,
+        date: moment(item.date).format('LL')
+      }));
+      this.dataSource.data = response;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
   }
 
@@ -46,7 +54,6 @@ export class DetailsComponent implements AfterViewInit, OnInit {
     // Implement edit logic here
   }
 
-  /** Deletes a record */
   deleteRecord(id: string): void {
     this.dbService.deleteData(id).subscribe(() => {
       this.loadData();
@@ -63,5 +70,4 @@ export class DetailsComponent implements AfterViewInit, OnInit {
       }
     });
   }
-
 }

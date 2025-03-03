@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>
+    <mat-icon *ngIf="data.type === 'info'" class="icon">info</mat-icon>
+    <span class="message">{{data.title}}</span>
+</h1>
+
+<div mat-dialog-content class="dialog-content">
+    {{ data.message }}
+</div>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button mat-dialog-close (click)="onAction()">Create</button>
+</mat-dialog-actions>

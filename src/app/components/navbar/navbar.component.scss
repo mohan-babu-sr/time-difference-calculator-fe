@@ -3,6 +3,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 16px;
+    background-color: black;
+    height: 8vh;
 }
 
 .spacer {
@@ -23,6 +25,14 @@
 
 .menu-icon {
     display: none;
+}
+
+.content-container {
+    // display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 92vh;
+    background-color: black;
 }
 
 button:hover {

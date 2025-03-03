@@ -11,5 +11,10 @@ export class NavbarComponent {
 
   toggleMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    console.log('isMobileMenuOpen: ',!this.isMobileMenuOpen);
+  }
+
+  closeMenu() {
+    this.isMobileMenuOpen = false;
   }
 }

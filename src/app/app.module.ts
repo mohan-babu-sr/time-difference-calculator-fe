@@ -27,6 +27,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CommonDialogComponent } from './components/common-dialog/common-dialog.component';
+import { MomentFormatPipe } from './pipes/moment-format.pipe';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,9 @@ import { MatSortModule } from '@angular/material/sort';
     HomeComponent,
     DetailsComponent,
     LoginComponent,
-    NotificationComponent
+    NotificationComponent,
+    CommonDialogComponent,
+    MomentFormatPipe
   ],
   imports: [
     BrowserModule,
@@ -55,7 +60,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
