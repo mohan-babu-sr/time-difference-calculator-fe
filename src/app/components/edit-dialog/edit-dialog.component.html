@@ -1,7 +1,7 @@
 <h1 mat-dialog-title class="dialog-title">Edit Record</h1>
 
 <div mat-dialog-content class="dialog-content">
-  
+
   <!-- Date Field (Disabled) -->
   <mat-form-field class="full-width">
     <mat-label>Date</mat-label>
@@ -20,6 +20,6 @@
 </div>
 
 <div mat-dialog-actions align="end" class="dialog-actions">
-  <button mat-button (click)="onCancel()"  class="cancel-btn">Cancel</button>
+  <button mat-button (click)="onCancel()" class="cancel-btn">Cancel</button>
   <button mat-button class="action-btn" (click)="onSave()" [disabled]="!isValid">Save</button>
 </div>

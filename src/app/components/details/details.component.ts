@@ -10,6 +10,7 @@ import { MomentInput } from 'moment';
 import * as moment from 'moment';
 import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonDialogComponent } from '../common-dialog/common-dialog.component';
 
 @Component({
   selector: 'app-details',
@@ -72,14 +73,29 @@ export class DetailsComponent implements AfterViewInit, OnInit {
   updateRecord(updatedData: any): void {
     this.dbService.updateData(updatedData).subscribe(() => {
       this.loadData(); // Reload table data
+      this.notify(CONSTANTS.SUCCESS, CONSTANTS.RECORD_UPDATED);
     });
   }
 
-  deleteRecord(id: string): void {
-    this.dbService.deleteData(id).subscribe(() => {
-      this.loadData();
-      this.notify(CONSTANTS.WARNING, CONSTANTS.RECORD_DELETED);
+  deleteRecord(deleteData: any): void {
+    const dialogRef = this.dialog.open(CommonDialogComponent, {
+      data: {
+        title: 'Delete Record!',
+        message: 'Are you sure to delete the record? For the selected date: ' + moment(deleteData.date).format('LL'),
+        type: 'delete',
+        actionButton: 'Delete'
+      }
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dbService.deleteData(deleteData._id).subscribe(() => {
+          this.loadData();
+          this.notify(CONSTANTS.WARNING, CONSTANTS.RECORD_DELETED);
+        });
+      }
+    }
+    );
   }
 
   notify(statusType: string, message: string): void {

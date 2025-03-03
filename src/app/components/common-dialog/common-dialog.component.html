@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>
-    <mat-icon *ngIf="data.type === 'info'" class="icon">info</mat-icon>
+<h1 mat-dialog-title [ngStyle]="{ color: data.type === 'delete' ? 'red' : 'inherit' }">
+    <mat-icon class="icon">{{data.type}}</mat-icon>
     <span class="message">{{data.title}}</span>
 </h1>
 
@@ -8,6 +8,6 @@
 </div>
 
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Close</button>
-    <button mat-button mat-dialog-close (click)="onAction()">Create</button>
+    <button mat-button mat-dialog-close class="cancel-btn">Close</button>
+    <button mat-button mat-dialog-close (click)="onAction()">{{ data.actionButton }}</button>
 </mat-dialog-actions>

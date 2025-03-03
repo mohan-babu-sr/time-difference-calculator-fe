@@ -87,8 +87,9 @@ export class HomeComponent implements OnInit {
     const dialogRef = this.dialog.open(CommonDialogComponent, {
       data: {
         title: 'No record found for the selected date!',
-        message: 'Do you want to add a new record? For the selected date: ' + moment(this.currentDate).format('LL'),
-        type: 'info'
+        message: 'Do you want to create a new record? For the selected date: ' + moment(this.currentDate).format('LL'),
+        type: 'info',
+        actionButton: 'Create'
       }
     });
 
