@@ -13,6 +13,7 @@ import { LoginComponent } from './components/login/login.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { EditDialogComponent } from './components/edit-dialog/edit-dialog.component';
 import { CommonDialogComponent } from './components/common-dialog/common-dialog.component';
+import { MomentFormatPipe } from './pipes/moment-format.pipe';
 
 // Material
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -30,7 +31,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MomentFormatPipe } from './pipes/moment-format.pipe';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,9 @@ import { MomentFormatPipe } from './pipes/moment-format.pipe';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

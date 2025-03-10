@@ -19,12 +19,12 @@ export class HomeComponent implements OnInit {
   endTime: any;
   isCurrentDateExist: boolean = false;
   isAction: boolean = false;
+  location: any;
 
   constructor(private dbService: DbService, private _notify: MatSnackBar, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    // this.openDialog();
-
+    this.location = this.getLocation();
     this.checkAndCalculateTime(6);
   }
 
@@ -109,10 +109,53 @@ export class HomeComponent implements OnInit {
         const payload = {
           date: this.currentDate,
           inTime: this.selectedTime,
-          outTime: this.endTime
+          outTime: this.endTime,
+          location: this.location
         };
         this.addData(payload);
       }
     });
   }
+
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+  
+        // Office coordinates (Replace with actual values)
+        const officeLat = 11.020425;
+        const officeLon = 76.996048;
+  
+        // Check if within 100 meters of office
+        const distance = this.getDistance(latitude, longitude, officeLat, officeLon);
+  
+        if (distance <= 100) {
+          this.location = 'Office 🏢'
+        } else {
+          this.location = 'Home 🏠'
+        }
+      });
+    } else {
+      this.location = 'Geolocation is not supported or permission denied';
+    }
+  }
+  
+  // Haversine formula to calculate distance between two coordinates
+  getDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 6371000; // Radius of Earth in meters
+    const toRad = (angle: number) => (angle * Math.PI) / 180;
+  
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+  
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  
+    return R * c; // Distance in meters
+  }
+  
 }

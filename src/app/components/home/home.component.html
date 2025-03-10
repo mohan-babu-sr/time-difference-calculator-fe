@@ -1,6 +1,6 @@
 <div class="page-container">
     <mat-card-header>
-      <mat-card-title class="title">Time Needed in Office</mat-card-title>
+      <mat-card-title class="title">Clock 🕘 In/Out time calculator</mat-card-title>
     </mat-card-header>
   
     <mat-card class="form-content">
@@ -17,9 +17,13 @@
         </mat-form-field>
   
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Enter In-Time</mat-label>
+          <mat-label>Clock In-Time</mat-label>
           <input matInput placeholder="HH:MM AM/PM" [value]="selectedTime" (input)="onTimeChange($event)">
         </mat-form-field>
+
+        <mat-card-content class="location-text">
+          📍 {{location === 'error' ? 'Geolocation is not supported or permission denied' : 'Your current location is ' + location}}
+        </mat-card-content>
       </div>
   
       <button mat-raised-button color="accent" (click)="checkAndCalculateTime(6)"
@@ -30,7 +34,7 @@
   
     <mat-card class="result-card">
       <mat-card-header>
-        <mat-card-subtitle>Calculated Out-Time: <strong>{{ endTime }}</strong></mat-card-subtitle>
+        <mat-card-subtitle>Clock Out-Time: <strong>{{ endTime }}</strong></mat-card-subtitle>
       </mat-card-header>
     </mat-card>
   

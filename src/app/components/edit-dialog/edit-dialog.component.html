@@ -1,15 +1,30 @@
-<h1 mat-dialog-title class="dialog-title">Edit Record</h1>
+<h1 mat-dialog-title class="dialog-title">{{isCreate ? data.title : 'Edit Record'}}</h1>
 
 <div mat-dialog-content class="dialog-content">
 
   <!-- Date Field (Disabled) -->
-  <mat-form-field class="full-width">
+  <mat-form-field class="full-width" *ngIf="!isCreate">
     <mat-label>Date</mat-label>
     <input matInput [(ngModel)]="data.date" disabled class="disabled-field">
   </mat-form-field>
 
-  <!-- In-Time Field with Validation -->
+  <mat-form-field class="full-width" *ngIf="isCreate">
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="picker" [value]="data.date" (dateChange)="onDateChange($event)">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
   <mat-form-field class="full-width">
+    <mat-label>Location</mat-label>
+    <mat-select [(ngModel)]="data.location">
+      <mat-option value="Home 🏠">Home 🏠</mat-option>
+      <mat-option value="Office 🏢">Office 🏢</mat-option>
+    </mat-select>
+  </mat-form-field>  
+
+  <!-- In-Time Field with Validation -->
+  <mat-form-field class="full-width" *ngIf="!isCreate">
     <mat-label>In-Time</mat-label>
     <input matInput [(ngModel)]="data.inTime" (input)="onTimeChange($event)" #inTimeCtrl="ngModel" required>
     <mat-error *ngIf="!isValid">

@@ -35,4 +35,8 @@ export class DbService {
   deleteData(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
+
+  getServerStatus() {
+    return this.http.get<any>(`${this.apiUrl}/serverStatus`);
+  }
 }

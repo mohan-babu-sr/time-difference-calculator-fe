@@ -1,10 +1,15 @@
 .table-container {
-  width: 100%;
+  width: 90%;
   max-width: 900px;
   margin: auto;
   margin-top: 20px;
   padding: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+  justify-content: space-between;
+  padding-bottom: 10px;
 }
 
 .table-title {
@@ -39,8 +44,68 @@ mat-icon {
     padding: 5px;
     background-color: black;
   }
-  
+
   .table-wrapper {
     font-size: 10px;
   }
+
+  .summary-card {
+    width: 90% !important;
+  }
+}
+
+
+// 
+/* Overall card styling */
+.summary-card {
+  width: 30%;
+  margin: 20px auto;
+  margin-top: 50px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Header styling */
+.summary-header {
+  margin: auto;
+  text-align: center;
+  color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Title styling */
+.summary-title {
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Content layout */
+.summary-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+}
+
+/* Each row styling */
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 8px;
+  background: #e6e5e5;
+}
+
+/* Labels and values */
+.summary-label {
+  font-weight: bold;
+  color: #424242;
+}
+
+.summary-value {
+  font-weight: bold;
+  color: #0288d1;
+  /* Blue accent */
 }

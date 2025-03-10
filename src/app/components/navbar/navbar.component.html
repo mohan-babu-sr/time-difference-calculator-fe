@@ -1,6 +1,6 @@
 <mat-toolbar class="navbar">
     <!-- Left Side: App Name -->
-    <span class="app-name">Time Tracker</span>
+    <span class="app-name">Clock In/Out Tracker</span>
 
     <!-- Desktop View -->
     <span class="spacer"></span>
@@ -9,7 +9,7 @@
         <button mat-button routerLink="/details">Details</button>
         <button *ngIf="!isLoggedIn" mat-button routerLink="/login">Login</button>
         <span matTooltip="Mohan" routerLink="/login">
-            <img *ngIf="isLoggedIn" src="assets/profile.jpg" alt="Profile Image" class="profile-img" />
+            <img *ngIf="isLoggedIn" src="assets/profile.jpg" alt="Profile" class="profile-img" />
         </span>          
     </div>
 

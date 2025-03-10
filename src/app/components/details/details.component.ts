@@ -18,8 +18,16 @@ import { CommonDialogComponent } from '../common-dialog/common-dialog.component'
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements AfterViewInit, OnInit {
-  displayedColumns: string[] = ['date', 'inTime', 'outTime', 'action'];
+  displayedColumns: string[] = ['date', 'inTime', 'outTime', 'location', 'action'];
   dataSource = new MatTableDataSource<any>();
+  month = moment().format('MMMM');
+  year = moment().format('YYYY');
+  workingDays: number = 0;
+  officeDays: number = 0;
+  wfhDays: number = 0;
+  remainingDays: number = 0;
+  remainingOfficeDays: number = 0;
+  remainingWFHDays: number = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -27,15 +35,31 @@ export class DetailsComponent implements AfterViewInit, OnInit {
   constructor(private dbService: DbService, private _notify: MatSnackBar, private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.workingDays = this.getWorkingDays(moment().year(), moment().month());
+    this.remainingOfficeDays = 12 - this.officeDays;
     this.loadData();
   }
 
   loadData(): void {
     this.dbService.getData().subscribe(response => {
-      response = response.map((item: { date: MomentInput; }) => ({
-        ...item,
-        date: moment(item.date).format('LL')
-      }));
+      response = response.map((item: { date: MomentInput; location: string }) => {
+        // Convert date format
+        const formattedDate = moment(item.date).format('LL');
+    
+        // Count office vs WFH days
+        if (item.location.toLowerCase().includes('office')) {
+          this.officeDays = this.officeDays + 1;
+        } else {
+          this.wfhDays = this.wfhDays + 1;
+        }
+        this.remainingDays = this.workingDays - (this.officeDays + this.wfhDays);
+        this.remainingOfficeDays = 12 - this.officeDays;
+        this.remainingWFHDays = this.workingDays - 12 - this.wfhDays;
+        return {
+          ...item,
+          date: formattedDate
+        };
+      });
       this.dataSource.data = response;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -106,5 +130,42 @@ export class DetailsComponent implements AfterViewInit, OnInit {
         message: message
       }
     });
+  }
+
+  createRecord(): void {
+    const dialogRef = this.dialog.open(EditDialogComponent, {
+      width: '400px',
+      data: {
+        isCreate: true,
+        title: 'Add New Record',
+        date: moment().format('LL')
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(newData => {
+      if (newData) {
+        // Add the new record to the database
+        this.dbService.addData(newData).subscribe(() => {
+          this.loadData(); // Reload table data
+          this.notify(CONSTANTS.SUCCESS, CONSTANTS.RECORD_ADDED);
+        });
+      }
+    });
+  }
+
+  getWorkingDays(year: number, month: number): number {
+    let workingDays = 0;
+    const daysInMonth = moment({ year, month }).daysInMonth(); // Total days in the month
+  
+    for (let day = 1; day <= daysInMonth; day++) {
+      const currentDay = moment({ year, month, day });
+      const dayOfWeek = currentDay.isoWeekday(); // 1 (Monday) to 7 (Sunday)
+  
+      if (dayOfWeek !== 6 && dayOfWeek !== 7) {
+        workingDays++; // Count only weekdays (Mon-Fri)
+      }
+    }
+  
+    return workingDays;
   }
 }
