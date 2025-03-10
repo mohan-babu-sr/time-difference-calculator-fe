@@ -1,1 +1,39 @@
-<p>login works!</p>
+<div class="login-container">
+    <div class="img-content">
+        <img src="../../../assets/profile.jpg" alt="profile" class="profile-image">
+    </div>
+    <mat-card class="user-card">
+        <mat-card-header>
+            <mat-card-title>👤 User Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="user-info">
+                <div class="user-row">
+                    <span class="user-label">👤 Name:</span>
+                    <span class="user-value">{{userData.name}}</span>
+                </div>
+                <div class="user-row">
+                    <span class="user-label">🔗 Username:</span>
+                    <span class="user-value">{{userData.userName}}</span>
+                </div>
+                <div class="user-row">
+                    <span class="user-label">📧 Email:</span>
+                    <span class="user-value">{{userData.email}}</span>
+                </div>
+                <div class="user-row">
+                    <span class="user-label">📞 Phone:</span>
+                    <span class="user-value">{{userData.phoneNumber}}</span>
+                </div>
+                <div class="user-row">
+                    <span class="user-label">✅ Account Status:</span>
+                    <span class="user-value status-active">{{userData.accountStatus}}</span>
+                </div>
+                <div class="user-row">
+                    <span class="user-label">⏳ Last Login:</span>
+                    <span class="user-value">{{userData.lastLogin}}</span>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+</div>
