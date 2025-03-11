@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit {
   checkServerStatus() {
     this.dbService.getData()
       .pipe(
-        timeout(10000), // Wait for 10 seconds
+        timeout(2000), // Wait for 2 seconds
         catchError(() => {
           this.snackBarRef = this._notify.open("Server is booting, please wait!", 'Okay', {
             panelClass: ['error-snackbar']

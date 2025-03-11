@@ -1,5 +1,7 @@
 import { Component, Inject } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-edit-dialog',
@@ -10,26 +12,31 @@ export class EditDialogComponent {
   isCreate: boolean = false;
   isValid: boolean = true;
   location: string | undefined;
+  dateControl = new FormControl(null, [Validators.required]);
+  timeControl = new FormControl('', [Validators.required]);
 
   constructor(
     public dialogRef: MatDialogRef<EditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dbService: DbService
   ) {
     if (data) {
       this.isCreate = data.isCreate;
     }
   }
 
-  onDateChange(event: any) {
-    this.data.date = event.value;
+  onDateChange() {
+    this.dbService.getByDate(this.dateControl.value).subscribe(data => {
+      this.isValid = !(data.length > 0);
+      this.dateControl.setErrors(this.isValid ? null : { dateExists: true });
+    })
   }
 
-  onTimeChange(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
+  onTimeChange(): void {
     const timeRegex = /^(0[1-9]|1[0-2]):[0-5][0-9]:[0-5][0-9] (AM|PM)$/;
 
-    this.isValid = timeRegex.test(inputElement.value);
-    console.log(this.isValid);
+    this.isValid = timeRegex.test(this.timeControl.value || '');
+    this.timeControl.setErrors(this.isValid ? null : { invalidTime: true });
   }
 
   onSave(): void {
@@ -41,7 +48,7 @@ export class EditDialogComponent {
     }
     console.log('Saving:', this.isCreate ? createData : this.data);
   
-    this.dialogRef.close(this.isCreate ? createData : this.data); // Return updated data
+    // this.dialogRef.close(this.isCreate ? createData : this.data); // Return updated data
   }
 
   onCancel(): void {
