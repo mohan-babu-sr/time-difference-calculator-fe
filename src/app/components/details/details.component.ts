@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonDialogComponent } from '../common-dialog/common-dialog.component';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-details',
@@ -35,6 +36,11 @@ export class DetailsComponent implements AfterViewInit, OnInit {
   constructor(private dbService: DbService, private _notify: MatSnackBar, private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.officeDays = 0;
+    this.wfhDays = 0;
+    this.remainingDays = 0;
+    this.remainingOfficeDays = 0;
+    this.remainingWFHDays = 0;
     this.workingDays = this.getWorkingDays(moment().year(), moment().month());
     this.remainingOfficeDays = 12 - this.officeDays;
     this.loadData();
@@ -168,4 +174,8 @@ export class DetailsComponent implements AfterViewInit, OnInit {
   
     return workingDays;
   }
+
+  onTabChange(event: MatTabChangeEvent) {
+    this.ngOnInit(); // Call your logic
+  }  
 }

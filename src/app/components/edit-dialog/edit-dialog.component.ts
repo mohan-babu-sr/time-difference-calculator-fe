@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { DbService } from 'src/app/services/db.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class EditDialogComponent {
   location: string | undefined;
   dateControl = new FormControl(null, [Validators.required]);
   timeControl = new FormControl('', [Validators.required]);
+  isRecordExist: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<EditDialogComponent>,
@@ -28,6 +30,7 @@ export class EditDialogComponent {
   onDateChange() {
     this.dbService.getByDate(this.dateControl.value).subscribe(data => {
       this.isValid = !(data.length > 0);
+      this.data.date = this.dateControl.value;
       this.dateControl.setErrors(this.isValid ? null : { dateExists: true });
     })
   }
@@ -46,9 +49,9 @@ export class EditDialogComponent {
       location: this.data.location,
       date: this.data.date
     }
-    console.log('Saving:', this.isCreate ? createData : this.data);
-  
-    // this.dialogRef.close(this.isCreate ? createData : this.data); // Return updated data
+
+    // console.log('Saving:', this.isCreate ? createData : this.data);
+    this.dialogRef.close(this.isCreate ? createData : this.data); // Return updated data  
   }
 
   onCancel(): void {

@@ -1,4 +1,4 @@
-<mat-tab-group color="accent">
+<mat-tab-group color="accent" (selectedTabChange)="onTabChange($event)">
   <mat-tab label="Summary">
     <mat-card class="summary-card">
       <mat-card-header class="summary-header">
