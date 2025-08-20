@@ -12,8 +12,12 @@ export class DbService {
   constructor(private http: HttpClient) {}
 
   // Get all records from MongoDB
-  getData(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}`);
+  getData(filterObject: any): Observable<any> {
+    let filterString = '';
+    if (filterObject.isFilter && filterObject.monthYear) {
+      filterString = '/filter?monthYear=' + filterObject.monthYear;
+    }
+    return this.http.get<any>(`${this.apiUrl}${filterString}`);
   }
 
   // Get a record by date

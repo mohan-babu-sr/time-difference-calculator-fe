@@ -47,13 +47,18 @@ export class DetailsComponent implements AfterViewInit, OnInit {
   }
 
   loadData(): void {
-    this.dbService.getData().subscribe(response => {
+    let filterObject = {
+      // date: moment(new Date()).format('YYYY-MM-DD'),
+      monthYear: moment().format('YYYY-MM'), // JavaScript months are 0-11
+      isFilter: true
+    };
+    this.dbService.getData(filterObject).subscribe(response => {
       response = response.map((item: { date: MomentInput; location: string }) => {
         // Convert date format
         const formattedDate = moment(item.date).format('LL');
     
         // Count office vs WFH days
-        if (item.location.toLowerCase().includes('office')) {
+        if (item.location?.toLowerCase().includes('office')) {
           this.officeDays = this.officeDays + 1;
         } else {
           this.wfhDays = this.wfhDays + 1;

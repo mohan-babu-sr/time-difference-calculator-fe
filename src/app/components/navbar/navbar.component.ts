@@ -22,7 +22,10 @@ export class NavbarComponent implements OnInit {
   }
 
   checkServerStatus() {
-    this.dbService.getData()
+    let filterObject = {
+      isFilter: false,
+    }
+    this.dbService.getData(filterObject)
       .pipe(
         timeout(2000), // Wait for 2 seconds
         catchError(() => {
