@@ -16,6 +16,7 @@ export class EditDialogComponent {
   dateControl = new FormControl(null, [Validators.required]);
   timeControl = new FormControl('', [Validators.required]);
   isRecordExist: boolean = false;
+  selectedDate: string | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<EditDialogComponent>,
@@ -31,6 +32,7 @@ export class EditDialogComponent {
     this.dbService.getByDate(this.dateControl.value).subscribe(data => {
       this.isValid = !(data.length > 0);
       this.data.date = this.dateControl.value;
+      this.selectedDate = this.dateControl.value;
       this.dateControl.setErrors(this.isValid ? null : { dateExists: true });
     })
   }
@@ -47,10 +49,10 @@ export class EditDialogComponent {
       inTime: '',
       outTime: '',
       location: this.data.location,
-      date: this.data.date
+      date: moment(this.selectedDate).format()
     }
 
-    // console.log('Saving:', this.isCreate ? createData : this.data);
+    console.log(this.isCreate, this.selectedDate, 'Saving:', this.isCreate ? createData : this.data);
     this.dialogRef.close(this.isCreate ? createData : this.data); // Return updated data  
   }
 
